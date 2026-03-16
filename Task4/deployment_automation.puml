@@ -1,0 +1,71 @@
+@startuml Deployment_Automation_Future_2_0
+title Будущее 2.0 - Диаграмма автоматизации развёртывания
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam wrapWidth 220
+skinparam roundCorner 8
+skinparam defaultFontName "Inter, Segoe UI, Arial"
+
+legend left
+  зелёный - управляется Terraform (IaC)
+  серый - вручную/за рамками IaC (ПО, лицензии, доступы)
+endlegend
+
+package "Cloud Landing Zone (dev/test/prod)" <<Cloud>> #EEE {
+  component "VPC/VNet\n<<TF>>" as VPC #88CC88
+  node "Subnets\n(app, data, secure, mgmt)\n<<TF>>" as SUBNETS #88CC88
+  node "NAT + Egress\n(без публичных IP)\n<<TF>>" as NAT #88CC88
+  node "Bastion/VPN\nдоступ админов\n<<Manual>>" as BASTION #DDDDDD
+
+  package "Data Platform" {
+    node "Kafka Cluster x3\nVM + Disks\n<<TF>>" as KAFKA #88CC88
+    node "ClickHouse x3\nVM + Disks\n<<TF>>" as CH #88CC88
+    node "Flink x2\nVM\n<<TF>>" as FLINK #88CC88
+    node "MinIO (S3) x2\nVM + Disks\n<<TF>>" as MINIO #88CC88
+    node "Apache Camel x2\nIntegration\n<<TF>>" as CAMEL #88CC88
+  }
+
+  package "Apps" {
+    node "Superset x1\nVM\n<<TF>>" as SUPERSET #88CC88
+    node "De-ID/Tokenization x1\nVM\n<<TF>>" as DEID #88CC88
+    node "MDM x1\nVM\n<<TF>>" as MDM #88CC88
+  }
+
+  database "Legacy DWH\nSQL Server 2008\n(read-only)\n<<Manual>>" as DWH #DDDDDD
+  node "Power BI / Portal\n(пользовательские ПК/SAAS)\n<<Manual>>" as PBI #DDDDDD
+}
+
+' Связи и потоки
+VPC -down- SUBNETS
+SUBNETS -down- NAT
+BASTION -left- SUBNETS
+
+CAMEL -down-> KAFKA : события/CDC
+CAMEL -down-> MINIO : файлы/лог
+KAFKA -down-> MINIO : sink
+MINIO -down-> FLINK : чтение потоков
+FLINK -down-> CH : трансформации -> витрины
+
+SUPERSET -down-> CH : аналитика (read-only)
+DEID -left-> CAMEL : де-идентиф. каналы
+MDM -left-> CAMEL : мастер-данные
+
+DWH -left-> CAMEL : CDC/реплика (read)
+PBI -down-> CH : Direct Query / коннектор (read)
+
+' Заметки
+note top of NAT
+  Точка исхода в интернет (egress)
+  Правила egress ограничены, inbound = 0
+end note
+
+note right of BASTION
+  Создаётся вручную: доступы, MFA, ключи в Terraform не моделируется
+end note
+
+note right of DWH
+  Легаси остаётся на своей площадке. Только чтение/CDC
+end note
+
+@enduml

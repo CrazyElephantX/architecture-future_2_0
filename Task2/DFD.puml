@@ -1,0 +1,94 @@
+@startuml
+!pragma layout smetana
+left to right direction
+
+
+' ==== Операционные домены ====
+package "Операционные домены" as DOM {
+  component "Клинические операции" as CO #LightBlue
+  component "PHI / Медицинские записи (изолированы)" as PHI #LightBlue
+  component "MDM: Клиент/Пациент + Согласия" as MDM #LightBlue
+  component "Биллинг / Доходный цикл" as BIL #LightBlue
+  component "Финансы и бухучёт" as FIN #LightBlue
+  component "Кредитный домен (банк)" as CRE #LightBlue
+  component "Финтех-платформа/платежи" as PAY #LightBlue
+  component "HR-домен" as HR #LightBlue
+  component "Инвентарь и активы" as INV #LightBlue
+  component "Закупки и поставщики" as PRC #LightBlue
+  component "ИИ-сервисы (мед.данные)" as AI #LightBlue
+  component "Партнёры: Фарма" as PARM #LightBlue
+  component "Партнёры: Электроника/мед.оборудование" as ELEC #LightBlue
+}
+
+' ==== Безопасность и идентификация ====
+package "Конфиденциальность / Идентификация / Политики" as SEC {
+  component "De-ID / Токенизация / Маскирование" as DEID #LightGreen
+  component "Политики доступа (RBAC/ABAC, согласия)" as POL #LightGreen
+}
+
+' ==== Платформа данных ====
+package "Платформа данных" as PLAT {
+  component "Apache Camel (интеграционный слой)" as CAMEL #LightYellow
+  component "Apache Kafka (события/CDC)" as KAFKA #LightYellow
+  component "S3-совместимое хранилище (лог/реплей)" as S3 #LightYellow
+  component "Apache Flink (стрим-трансформации)" as FLINK #LightYellow
+  component "ClickHouse (serving/витрины)" as CH #LightYellow
+}
+
+' ==== Аналитика и доступ ====
+package "Доступ и аналитика" as ANALYTICS {
+  component "Портал самообслуживания (кастом)" as PORTAL #LightPink
+  component "Apache Superset" as SUPER #LightPink
+  component "Power BI (существующая)" as PBI #LightPink
+}
+
+' ==== Легаси (переходный период) ====
+package "Легаси / переходный период" as LEGACY {
+  component "DWH: SQL Server 2008 - read-only" as DWH #LightGray
+}
+
+' ==== Потоки данных ====
+
+' Домены -> Camel (REST/CDC/и пр.)
+CO --> CAMEL
+BIL --> CAMEL
+FIN --> CAMEL
+CRE --> CAMEL
+PAY --> CAMEL
+HR --> CAMEL
+INV --> CAMEL
+PRC --> CAMEL
+MDM --> CAMEL
+PARM --> CAMEL
+ELEC --> CAMEL
+
+' PHI проходит через де-идентификацию, затем в Camel
+PHI --> DEID : PHI
+DEID --> CAMEL : де-идентиф. токены/поля
+
+' Политики применяются в Camel/Flink/ClickHouse
+POL -.- CAMEL
+POL -.- FLINK
+POL -.- CH
+note on link: применяются
+
+' Camel публикует в Kafka
+CAMEL --> KAFKA : события, CDC, команды
+
+' Долговременный лог/реплей
+KAFKA --> S3 : sink
+
+' Стрим-трансформации и загрузка в ClickHouse
+S3 --> FLINK
+FLINK --> CH
+
+' Доступ к витринам
+CH --> SUPER
+CH --> PORTAL
+PBI --> CH : Direct Query/через коннектор
+
+' Легаси только читает или даёт CDC
+DWH --> CAMEL : CDC/реплика
+DWH --> PBI : read
+
+@enduml

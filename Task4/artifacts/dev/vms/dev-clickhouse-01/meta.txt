@@ -1,0 +1,7 @@
+name=dev-clickhouse-01
+role=clickhouse
+subnet=data
+ip=10.42.20.10
+cpu=8
+ram_gb=32
+disk_gb=500

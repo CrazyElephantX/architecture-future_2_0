@@ -1,0 +1,7 @@
+name=dev-flink-02
+role=flink
+subnet=app
+ip=10.42.10.11
+cpu=4
+ram_gb=16
+disk_gb=100
