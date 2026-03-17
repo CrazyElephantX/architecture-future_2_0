@@ -1,0 +1,2 @@
+NAT: enabled
+Outbound only, no public inbound.

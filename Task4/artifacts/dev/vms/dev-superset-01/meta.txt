@@ -1,0 +1,7 @@
+name=dev-superset-01
+role=superset
+subnet=app
+ip=10.42.10.10
+cpu=2
+ram_gb=4
+disk_gb=40

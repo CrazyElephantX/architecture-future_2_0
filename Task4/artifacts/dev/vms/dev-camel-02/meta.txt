@@ -1,0 +1,7 @@
+name=dev-camel-02
+role=camel
+subnet=app
+ip=10.42.10.11
+cpu=2
+ram_gb=8
+disk_gb=40

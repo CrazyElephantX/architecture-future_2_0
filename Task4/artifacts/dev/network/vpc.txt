@@ -1,0 +1,3 @@
+VPC CIDR: 10.42.0.0/16
+Subnets:  {"app":{"az":"az-a","cidr":"10.42.10.0/24"},"data":{"az":"az-b","cidr":"10.42.20.0/24"},"mgmt":{"az":"az-a","cidr":"10.42.40.0/24"},"secure":{"az":"az-c","cidr":"10.42.30.0/24"}}
+NAT:      true

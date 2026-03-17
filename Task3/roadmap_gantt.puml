@@ -1,0 +1,42 @@
+@startgantt
+project starts 2026-01-01
+
+
+printscale weekly
+hide footbox
+
+-- Задачи Этапа 0 --
+[«Cкелет» платформы (Camel/Kafka/S3/Flink)] as [Skelet] starts 2026-01-01 and ends 2026-02-28
+[Включение Kafka Schema Registry и правил эволюции схем] as [Kafka] starts 2026-01-15 and ends 2026-03-15
+[Запуск De-ID/Токенизация] as [Tokenezation] starts 2026-01-01 and ends 2026-04-30
+
+-- Задачи Этапа 1 --
+[Выделение доменов, подключение MDM/Согласия, Биллинг, Финтех-платежи] as [Domens] starts 2026-02-01 and ends 2026-06-30
+[Flink upserts -> ClickHouse] as [newClickHouse] starts 2026-02-15 and ends 2026-05-31
+[Superset/Portal MVP] starts 2026-04-01 and ends 2026-06-30
+[Базовые Data Quality-проверки во Flink] starts 2026-04-15 and ends 2026-07-15
+[Power BI -> ClickHouse] starts 2026-05-01 and ends 2026-07-31
+
+-- Задачи Этапа 2 --
+[Онбординг доменов (Клинические операции, Инвентарь, Кредитный домен)] as [onboarding] starts 2026-07-01 and ends 2026-10-31
+[Подключение партнёров через camel -> kafka -> Flink -> CH] starts 2026-07-15 and ends 2026-10-15
+[Витрины для кредитного конвейера] starts 2026-08-01 and ends 2026-10-31
+
+-- Задачи Этапа 3 --
+[Включение Семантического слоя для ключевых KPI] starts 2026-09-01 and ends 2026-12-31
+[Усиление Data Quality (постоянная доработка)] starts 2026-09-15 and ends 2026-12-31
+[CI/CD для данных] starts 2026-10-01 and ends 2026-12-31
+[Расширение ABAC/RBA] starts 2026-10-15 and ends 2026-12-31
+
+-- Задачи Этапа 4 --
+[Портал самообслуживания/superset: роли, алёрты, конструктор дашбордов] starts 2026-11-01 and ends 2027-02-28
+[Оптимизация ClickHouse] starts 2026-11-15 and ends 2027-01-15
+[Масштабирование кластеров Apache Flink и Apache Kafka] starts 2026-12-01 and ends 2027-03-31
+[Перенос оставшейся критичной отчётности Power BI на ClickHouse] starts 2027-01-01 and ends 2027-03-31
+
+' Зависимости
+[Skelet] -> [Domens]
+[Kafka] -> [newClickHouse]
+[Tokenezation] -> [onboarding]
+
+@endgantt

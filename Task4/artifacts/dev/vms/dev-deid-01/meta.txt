@@ -1,0 +1,7 @@
+name=dev-deid-01
+role=deid
+subnet=secure
+ip=10.42.30.10
+cpu=2
+ram_gb=8
+disk_gb=80
