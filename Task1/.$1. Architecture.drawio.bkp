@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.1 Chrome/142.0.7444.265 Electron/39.8.0 Safari/537.36" version="29.6.1">
   <diagram name="Страница - 1" id="odPCr2e-M-hTt7ZsvL2L">
-    <mxGraphModel dx="1055" dy="1305" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1933" dy="1843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -164,9 +164,6 @@
             </mxGeometry>
           </mxCell>
         </object>
-        <mxCell id="4NxyT9qT1xB-Lec8nwZ0-2" parent="1" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;align=left;verticalAlign=middle;fontFamily=Helvetica;labelBackgroundColor=none;resizable=1;labelBorderColor=none;spacingTop=0;spacingLeft=10;" value="&lt;span style=&quot;font-size: 20px;&quot;&gt;Целевая архитектура поддерживает ключевые бизнес-сценарии компании: 1) Быстрая подготовка отчётности – через ClickHouse и Superset; 2) Независимое развитие финтех- и ИИ-направлений – через домены и шину событий Kafka; 3) Масштабирование для новых бизнесов – через модульные интеграции Camel и Data Mesh.&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;Apache Camel остаётся как унифицированный интеграционный слой, но ограничения снимаются за счёт масштабирования и оптимизации маршрутов.&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="460" width="360" x="2030" y="510" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
